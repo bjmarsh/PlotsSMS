@@ -6,6 +6,7 @@ class inputFile():
 
     def __init__(self, fileName):
         self.HISTOGRAM = self.findHISTOGRAM(fileName)
+        self.SIGHISTO = self.findSIGHISTO(fileName)
         self.EXPECTED = self.findEXPECTED(fileName)
         self.OBSERVED = self.findOBSERVED(fileName)
         self.LUMI = self.findATTRIBUTE(fileName, "LUMI")
@@ -30,6 +31,17 @@ class inputFile():
             x = rootFileIn.Get(tmpLINE[2])
             x.SetDirectory(0)
             return {'histogram': x}
+
+    def findSIGHISTO(self, fileName):
+        fileIN = open(fileName)        
+        for line in fileIN:
+            tmpLINE =  line[:-1].split(" ")
+            if tmpLINE[0] != "SIGHISTO": continue
+            fileIN.close()
+            rootFileIn = rt.TFile.Open(tmpLINE[1])
+            x = rootFileIn.Get(tmpLINE[2])
+            x.SetDirectory(0)
+            return {'histogram': x}
             
     def findEXPECTED(self, fileName):
         fileIN = open(fileName)        
@@ -41,8 +53,12 @@ class inputFile():
             return {'nominal': rootFileIn.Get(tmpLINE[2]),
                     'plus': rootFileIn.Get(tmpLINE[3]),
                     'minus': rootFileIn.Get(tmpLINE[4]),
+                    'plus2': rootFileIn.Get(tmpLINE[3].replace("1","2")),
+                    'minus2': rootFileIn.Get(tmpLINE[4].replace("1","2")),
                     'colorLine': tmpLINE[5],
                     'colorArea': tmpLINE[6]}
+
+        
 
     def findOBSERVED(self, fileName):
         fileIN = open(fileName)        
