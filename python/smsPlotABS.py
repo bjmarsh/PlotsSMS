@@ -2,6 +2,7 @@ import ROOT as rt
 from array import *
 from sms import *
 from color import *
+from math import atan, pi
 import CMS_lumi
 class smsPlotABS(object):
     # modelname is the sms name (see sms.py)
@@ -286,11 +287,26 @@ class smsPlotABS(object):
         diagonal = rt.TGraph(2, array('d',[self.model.Xmin,self.model.Xmax]), array('d',[self.model.Xmin-175,self.model.Xmax-175]))
         diagonal.SetName("diagonal")
         diagonal.SetFillColor(rt.kWhite)
-        diagonal.SetLineColor(rt.kGray)
+        diagonal.SetLineColor(rt.kGray+1)
         diagonal.SetLineStyle(2)
+        diagonal.SetLineWidth(2)
         diagonal.Draw("FSAME")
         diagonal.Draw("LSAME")
         self.c.diagonal = diagonal
+        mt_text = rt.TLatex(0.5*(self.model.Xmin+self.model.Xmax), 0.5*(self.model.Xmin+self.model.Xmax)-175+0.5,
+                            "m_{#tilde{t}} = m_{t} + m_{#tilde{#chi}_{1}^{0}}")
+        mt_text.SetTextAlign(11)
+        mt_text.SetTextColor(rt.kGray+2)
+        mt_text.SetTextFont(62)
+        mt_text.SetTextSize(0.030)
+        canvasx = 1.0 - self.c.GetRightMargin() - self.c.GetLeftMargin()
+        canvasy = 1.0 - self.c.GetBottomMargin() - self.c.GetTopMargin()
+        gevperpixx = (self.model.Xmax-self.model.Xmin) / canvasx
+        gevperpixy = (self.model.Ymax-self.model.Ymin) / canvasy
+        angle = atan(gevperpixx / gevperpixy) * 180 / pi
+        mt_text.SetTextAngle(angle)
+        mt_text.Draw()
+        self.c.mt_text = mt_text
         
     def DrawLines(self):
         # observed

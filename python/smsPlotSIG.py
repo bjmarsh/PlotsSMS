@@ -49,9 +49,9 @@ class smsPlotSIG(smsPlotABS):
         palette.SetLabelSize(0.035)
 
     def DrawPaletteLabel(self):
-        textCOLZ = rt.TLatex(0.98,0.5,"Signal Significance")
+        textCOLZ = rt.TLatex(0.98,0.62,"Significance [#sigma]")
         textCOLZ.SetNDC()
-        textCOLZ.SetTextAlign(21)
+        textCOLZ.SetTextAlign(11)
         textCOLZ.SetTextFont(42)
         textCOLZ.SetTextSize(0.045)
         textCOLZ.SetTextAngle(90)
